@@ -81,7 +81,7 @@ public class RandomDrawingDriver {
 		
 		
 		// UNCOMMENT TO TEST YOUR EXTRA CREDIT
-		/*
+
 		System.out.println("\n**************************TESTING EXTRA CREDIT**************************");
 
 		System.out.println("\nSmall Capped Contest Drawing with Repeats:");
@@ -127,26 +127,30 @@ public class RandomDrawingDriver {
 			System.out.println("   *****Test Failed: size should be capped at 100.");
 		}
 		testRandomDrawing(largeCappedDrawing, "Large capped RandomDrawing at capacity");
-	*/	
+
 	}
 	
 
 	// YOUR GENERIC METHOD HERE
-	public <T> Collection<? extends T> selectMultipleUniqueWinners(RandomDrawing<T> drawingList, int numWinners) {
+	public static <T> List<T> selectMultipleUniqueWinners(RandomDrawingInterface<T> drawingList, int numWinners) {
 		List<T> winnersList = new ArrayList<>();
 		if (drawingList.size() == 0) {
+			// no entries = no winners, return null
 			return null;
-		} else if (drawingList.size() <= numWinners) {
-			// return all entries as winners
-				winnersList.addAll(drawingList);
-				return winnersList;
-			} else {
+		} else {
 			// pick winners at random
-
-			for (int i = 1; i <= numWinners; i++) {
-				drawingList.selectWinner(false);
+			while (winnersList.size() < numWinners) {
+				// pick a temporary winner at random, removing them from the drawing
+				T tempWinner = drawingList.selectWinner(true);
+				if (!winnersList.contains(tempWinner)) {
+					// tempWinner isn't in the winnersList so add them and move on
+					winnersList.add(tempWinner);
+				} else {
+					// tempWinner was in the winnersList (duplicate) so add them back to the drawingList and try again
+					drawingList.addEntry(tempWinner);
+				}
 			}
-
+		return winnersList;
 		}
 	}
 

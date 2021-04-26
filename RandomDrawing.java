@@ -1,4 +1,4 @@
-/**
+/*
  * @author Brent Michael Gannetta WA0000487
  * CS 211S: M9 Generics
  * RandomDrawing.java
@@ -7,17 +7,14 @@
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.Math.random;
-
-public class RandomDrawing <T> implements RandomDrawingInterface<T> {
-    private List<T> entriesList;
+public class RandomDrawing <T> implements RandomDrawingInterface <T> {
+    private final List<T> entriesList;
     private int numEntries;
-    private boolean allowDuplicates;
+    private final boolean allowDuplicates;
 
     /**
      * RandomDrawing constructor
      * @param allowDuplicates boolean sets whether to allow duplicates, sets list type
-     * @return List T
      */
     public RandomDrawing(boolean allowDuplicates) {
         this.allowDuplicates = allowDuplicates;
@@ -38,17 +35,17 @@ public class RandomDrawing <T> implements RandomDrawingInterface<T> {
         } // no logic needed due to return in for each loop above
         entriesList.add(entry);
         numEntries++;
-        return true;    // success!
+        return true;
     }
 
 
     @Override
     public T selectWinner(boolean removeWinner) {
         if (numEntries == 0) {
+            // no entries = no winner. return null
             return null;
         } else {
             int winnerIndex = (int) (Math.random() * numEntries);
-            // System.out.println("INFO: winnerIndex = " + winnerIndex);
             T winner = entriesList.get(winnerIndex);
             if (removeWinner) {
                 entriesList.remove(winnerIndex);
